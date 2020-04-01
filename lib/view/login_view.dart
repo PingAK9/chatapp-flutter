@@ -1,6 +1,6 @@
 import 'package:chatapp/repository/login_repository.dart';
-import 'package:chatapp/ui/progress_dialog.dart';
-import 'package:chatapp/ui/ui_manager.dart';
+import 'package:chatapp/ui/utility/my_snackbar.dart';
+import 'package:chatapp/ui/utility/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -33,22 +33,20 @@ class _LoginViewState extends State<LoginView> {
   }
 
   _clickSignIn() async {
-    ProgressDialog loading =
-        ProgressDialog(context, message: 'Check new \nAccount');
-    loading.show();
+    showLoading(context, message: "Check new Account");
     try {
       FirebaseUser user = await LoginRepository.handleSignIn();
       if (user != null) {
         await LoginRepository.checkNewUser(user);
-        loading.hide();
+        hideLoading(context);
         Navigator.pushReplacementNamed(context, '/home');
         return;
       } else {
-        UIManager.showSnackBar(_scaffoldKey, 'Sign in fail');
+        _scaffoldKey.currentState.showSnackBar(mySnackBar("Sign in fail"));
       }
     } catch (e) {
-      UIManager.showSnackBar(_scaffoldKey, 'Sign in fail');
+      _scaffoldKey.currentState.showSnackBar(mySnackBar("Sign in fail"));
     }
-    loading.hide();
+    hideLoading(context);
   }
 }

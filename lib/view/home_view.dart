@@ -1,4 +1,4 @@
-import 'package:chatapp/provider/value_update.dart';
+import 'package:chatapp/repository/value_update.dart';
 import 'package:chatapp/view/account_info.dart';
 import 'package:chatapp/view/search_friend.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView>
   @override
   Widget build(BuildContext context) {
     return Provider<ValueUpdate<int>>(
-      builder: (_) => ValueUpdate(0),
+      create: (_) => ValueUpdate(0),
       child: Consumer<ValueUpdate<int>>(
         builder: (context, value, child) {
           return WillPopScope(

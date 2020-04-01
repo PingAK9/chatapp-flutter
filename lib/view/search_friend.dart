@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatapp/core/game_data.dart';
 import 'package:chatapp/model/user_info.dart';
-import 'package:chatapp/provider/seach_provider.dart';
+import 'package:chatapp/repository/seach_provider.dart';
 import 'package:chatapp/view/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _SearchFriendState extends State<SearchFriend> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(builder: (_) => SearchProvider('')),
+        ChangeNotifierProvider(create: (_) => SearchProvider('')),
       ],
       child: Scaffold(
         appBar: AppBar(

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatapp/core/game_data.dart';
 import 'package:chatapp/model/user_info.dart';
-import 'package:chatapp/ui/progress_dialog.dart';
+import 'package:chatapp/ui/utility/progress_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -274,14 +274,12 @@ class _AccountInfoState extends State<AccountInfo> {
   }
 
   Future<Null> _handleSignOut() async {
-    ProgressDialog loading = ProgressDialog(context);
-    loading.setMessage('Logout');
-    loading.show();
+    showLoading(context, message: "Logout");
     await FirebaseAuth.instance.signOut();
     await googleSignIn.disconnect();
     await googleSignIn.signOut();
 
-    loading.hide();
+    hideLoading(context);
 
     Navigator.pushReplacementNamed(context, '/login');
   }

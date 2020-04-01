@@ -5,7 +5,6 @@ import 'package:chatapp/repository/login_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class InitView extends StatefulWidget {
   @override
