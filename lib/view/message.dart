@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:chatapp/model/message.dart';
 
 class Message extends StatefulWidget {
   @override
@@ -134,7 +135,7 @@ class _MessageState extends State<Message> {
               color: Colors.black87,
             ),
             onPressed: () {
-              onSendMessage(textEditingController.text, messageType.text);
+              onSendMessage(textEditingController.text, MessageType.text);
             },
           ),
         ],
@@ -186,7 +187,7 @@ class _MessageState extends State<Message> {
           setState(() {
             currentImage = null;
           });
-          onSendMessage(url, messageType.image);
+          onSendMessage(url, MessageType.image);
         },
         onError: () {
           setState(() {
@@ -220,7 +221,7 @@ class _MessageState extends State<Message> {
     });
   }
 
-  void onSendMessage(String content, messageType type) {
+  void onSendMessage(String content, MessageType type) {
     if (content.trim().isNotEmpty) {
       textEditingController.clear();
       var documentReference = Firestore.instance
@@ -294,10 +295,10 @@ class _MessageState extends State<Message> {
   }
 
   buildItemData(DocumentSnapshot data) {
-    var type = messageType.values[int.parse(data.data['type'].toString())];
+    var type = MessageType.values[int.parse(data.data['type'].toString())];
 
     switch (type) {
-      case messageType.image:
+      case MessageType.image:
         return Container(
           margin: EdgeInsets.only(left: 10, right: 10),
           padding: EdgeInsets.all(10),
@@ -317,7 +318,7 @@ class _MessageState extends State<Message> {
           ),
         );
         break;
-      case messageType.sticker:
+      case MessageType.sticker:
         break;
       default:
         return Container(
@@ -332,4 +333,3 @@ class _MessageState extends State<Message> {
   }
 }
 
-enum messageType { text, image, sticker }

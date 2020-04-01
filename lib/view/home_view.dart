@@ -1,7 +1,11 @@
 import 'package:chatapp/repository/value_update.dart';
 import 'package:chatapp/view/account_info.dart';
-import 'package:chatapp/view/search_friend.dart';
+import 'package:chatapp/view/contacts/contact_view.dart';
+import 'package:chatapp/view/settings/setting_view.dart';
+import 'package:chatapp/view/storys/story_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -11,14 +15,16 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with SingleTickerProviderStateMixin {
-  TabController tabController;
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    tabController = new TabController(vsync: this, length: 2);
   }
+
+  List<Widget> homeTap = [
+    ContactView(),
+    StoryView(),
+    SettingView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,46 +32,47 @@ class _HomeViewState extends State<HomeView>
       create: (_) => ValueUpdate(0),
       child: Consumer<ValueUpdate<int>>(
         builder: (context, value, child) {
-          return WillPopScope(
-            onWillPop: () async {
-              if (tabController.index != 0) {
-                tabController.animateTo(0);
-              }
-              value.valueNotifier.value = 0;
-              return false;
-            },
-            child: Scaffold(
-              body: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
-                controller: tabController,
-                children: <Widget>[
-                  SearchFriend(),
-                  AccountInfo(),
-                ],
-              ),
-              bottomNavigationBar: ValueListenableProvider<int>.value(
-                value: value.valueNotifier,
-                child: Consumer<int>(builder: (context, index, child) {
-                  return BottomNavigationBar(
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.add_box),
-                        title: Text('Friends'),
+          return ValueListenableProvider<int>.value(
+            value: value.valueNotifier,
+            child: Consumer<int>(
+              builder: (context, index, child) {
+                return WillPopScope(
+                  onWillPop: () async {
+                    value.valueNotifier.value = 0;
+                    return false;
+                  },
+                  child: Scaffold(
+                    body: homeTap.elementAt(index),
+                    bottomNavigationBar: CupertinoTabBar(
+                      items: [
+                        BottomNavigationBarItem(
+                          icon: Icon(Ionicons.ios_chatbubbles),
+                          title: Text('Chats'),
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.burst_mode),
+                          title: Text('Storys'),
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Ionicons.ios_settings),
+                          title: Text('Settings'),
+                        ),
+                      ],
+                      currentIndex: index,
+                      onTap: (index) {
+                        value.valueNotifier.value = index;
+                      },
+                      border : Border(
+                        top: BorderSide(
+                          color: Colors.grey,
+                          width: 1.0, // One physical pixel.
+                          style: BorderStyle.solid,
+                        ),
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.account_box),
-                        title: Text('Account'),
-                      ),
-                    ],
-                    currentIndex: index,
-                    selectedItemColor: Colors.amber[800],
-                    onTap: (int index) {
-                      value.valueNotifier.value = index;
-                      tabController.animateTo(index);
-                    },
-                  );
-                }),
-              ),
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },

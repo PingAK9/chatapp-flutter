@@ -1,9 +1,15 @@
-class Utility {
-  static bool isNullOrEmpty<T>(Iterable<T> array) {
-    return array == null || array.length == 0;
+bool isNullOrEmpty(dynamic object) {
+  if (object == null) {
+    return true;
   }
-
-  static bool stringIsNullOrEmpty(String value) {
-    return (value?.trim()?.isEmpty ?? true);
+  if (object is String) {
+    return object.trim().isEmpty;
   }
+  if (object is Iterable) {
+    return object.isEmpty;
+  }
+  if (object is Map) {
+    return object.isEmpty;
+  }
+  return false;
 }

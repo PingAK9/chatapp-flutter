@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: MyApp.navKey,
-      title: 'Flutter Demo',
+      title: 'Chat Demo',
       theme: themeData,
       initialRoute: '/',
       onGenerateRoute: Router.generateRoute,

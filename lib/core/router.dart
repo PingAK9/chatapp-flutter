@@ -1,3 +1,4 @@
+import 'package:chatapp/view/account_info.dart';
 import 'package:chatapp/view/empty_view.dart';
 import 'package:chatapp/view/home_view.dart';
 import 'package:chatapp/view/init_view.dart';
@@ -21,6 +22,9 @@ class Router {
       case '/message':
         return MaterialPageRoute(
             builder: (_) => Message(settings.arguments), settings: settings);
+      case '/account-info':
+        return MaterialPageRoute(
+            builder: (_) => AccountInfo(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => EmptyView(title: settings.name));
